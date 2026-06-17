@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
+    "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.3.1",
     "@tanstack/react-form": "^1.33.0",
     "@tanstack/react-query": "^5.101.0",
@@ -23,6 +24,7 @@
     "badge": "^1.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "gsap": "^3.15.0",
     "lucide-react": "^1.18.0",
     "next-themes": "^0.4.6",
     "postcss": "^8.5.15",

@@ -3,6 +3,7 @@
   "specifiers": {
     "npm:@eslint/js@^10.0.1": "10.0.1_eslint@10.5.0",
     "npm:@fontsource-variable/inter@^5.2.8": "5.2.8",
+    "npm:@gsap/react@^2.1.2": "2.1.2_gsap@3.15.0_react@19.2.7",
     "npm:@tailwindcss/vite@^4.3.1": "4.3.1_vite@8.0.16__@types+node@24.13.2",
     "npm:@tanstack/react-form@^1.33.0": "1.33.0_react@19.2.7_react-dom@19.2.7__react@19.2.7",
     "npm:@tanstack/react-query@^5.101.0": "5.101.0_react@19.2.7",
@@ -23,6 +24,7 @@
     "npm:eslint-plugin-react-refresh@~0.5.2": "0.5.2_eslint@10.5.0",
     "npm:eslint@^10.3.0": "10.5.0",
     "npm:globals@^17.6.0": "17.6.0",
+    "npm:gsap@^3.15.0": "3.15.0",
     "npm:lucide-react@^1.18.0": "1.18.0_react@19.2.7",
     "npm:next-themes@~0.4.6": "0.4.6_react@19.2.7_react-dom@19.2.7__react@19.2.7",
     "npm:postcss@^8.5.15": "8.5.15",
@@ -371,6 +373,13 @@
     },
     "@fontsource-variable/inter@5.2.8": {
       "integrity": "sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ=="
+    },
+    "@gsap/react@2.1.2_gsap@3.15.0_react@19.2.7": {
+      "integrity": "sha512-JqliybO1837UcgH2hVOM4VO+38APk3ECNrsuSM4MuXp+rbf+/2IG2K1YJiqfTcXQHH7XlA0m3ykniFYstfq0Iw==",
+      "dependencies": [
+        "gsap",
+        "react"
+      ]
     },
     "@hono/node-server@1.19.14_hono@4.12.25": {
       "integrity": "sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw==",
@@ -2896,6 +2905,9 @@
     "graceful-fs@4.2.11": {
       "integrity": "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="
     },
+    "gsap@3.15.0": {
+      "integrity": "sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A=="
+    },
     "h2o2@1.0.1": {
       "integrity": "sha512-LSM9j5clNKgMRENC6vM4wg0YRmpG3fZigHLVv+W2OtKUNjmQ05F+XXqp4O5j2OnCK4/MAUHoAN5vnL0bmLgQsQ==",
       "dependencies": [
@@ -4398,6 +4410,7 @@
       "dependencies": [
         "npm:@eslint/js@^10.0.1",
         "npm:@fontsource-variable/inter@^5.2.8",
+        "npm:@gsap/react@^2.1.2",
         "npm:@tailwindcss/vite@^4.3.1",
         "npm:@tanstack/react-form@^1.33.0",
         "npm:@tanstack/react-query@^5.101.0",
@@ -4418,6 +4431,7 @@
         "npm:eslint-plugin-react-refresh@~0.5.2",
         "npm:eslint@^10.3.0",
         "npm:globals@^17.6.0",
+        "npm:gsap@^3.15.0",
         "npm:lucide-react@^1.18.0",
         "npm:next-themes@~0.4.6",
         "npm:postcss@^8.5.15",
