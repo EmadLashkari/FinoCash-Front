@@ -1,4 +1,4 @@
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useParams } from "@tanstack/react-router";
 import { Button } from "../../components/ui/button";
 import {
   Avatar,
@@ -13,8 +13,12 @@ import {
   ShoppingBag,
   User,
 } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 
 export function MobileDashboardLayout() {
+  const params = useParams({ strict: false });
+  const schoolId = params.schoolId;
+  const navigate = useNavigate();
   return (
     <div
       className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans pb-24"
@@ -55,6 +59,9 @@ export function MobileDashboardLayout() {
       <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-100 flex justify-around items-center px-2 shadow-lg rounded-t-2xl z-50">
         <Button
           variant="ghost"
+          onClick={() => {
+            navigate({ to: `/dashboard/${schoolId}` });
+          }}
           className="flex flex-col items-center justify-center h-full w-14 gap-0.5 text-sky-600 hover:bg-transparent"
         >
           <ChartBarIcon className="h-5 w-5" />
@@ -81,6 +88,9 @@ export function MobileDashboardLayout() {
 
         <Button
           variant="ghost"
+          onClick={() => {
+            navigate({ to: `/dashboard/${schoolId}/products` });
+          }}
           className="flex flex-col items-center justify-center h-full w-14 gap-0.5 text-slate-400 hover:text-slate-600 hover:bg-transparent"
         >
           <ShoppingBag className="h-6 w-6" />

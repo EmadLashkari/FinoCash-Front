@@ -4,6 +4,7 @@ import { useForm } from "@tanstack/react-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { z } from "zod";
 import {
   ArrowLeft,
   GraduationCap,
@@ -12,6 +13,17 @@ import {
   Loader2,
   Smartphone,
 } from "lucide-react";
+import { api } from "@/config/axios";
+import { FormField } from "@/components/ui/form-field";
+import { toast } from "sonner";
+
+const loginSchema = z.object({
+  mobilePhone: z.string().regex(
+    /^09\d{9}$/,
+    "شماره موبایل وارد شده معتبر نیست.",
+  ),
+  password: z.string().min(6, "رمز عبور باید حداقل ۶ کاراکتر باشد"),
+});
 
 export const Route = createFileRoute("/login")({
   component: MobileLogin,
@@ -24,17 +36,52 @@ function MobileLogin() {
 
   const phoneForm = useForm({
     defaultValues: {
-      phoneNumber: "",
+      mobilePhone: "",
       password: "",
     },
+    validators: {
+      onChange: loginSchema,
+    },
     onSubmit: async ({ value }) => {
-      if (!value.phoneNumber) return;
+      if (!value.mobilePhone) return;
+      console.log("Phone Form Submitted:", value);
       setIsLoading(true);
 
-      setTimeout(() => {
+      try {
+        const response = await api.post("/auth/login", value);
+        console.log("Login Response:", response);
+        switch (response.status) {
+          case 200:
+            navigate({ to: "/dashboard" });
+            break;
+          case 401:
+            toast.error(response.data?.error || "Invalid credentials.");
+            break;
+          default:
+            toast.error("خطا در ورود به سیستم. لطفاً دوباره تلاش کنید.");
+        }
+      } catch (error) {
+        if (error.response) {
+          const { status, data } = error.response;
+
+          switch (status) {
+            case 401:
+              if (data?.error) {
+                toast.error(data.error); // Displays the exact error message from Deno backend
+              } else {
+                toast.error("Invalid credentials.");
+              }
+              break;
+            default:
+              toast.error(
+                data?.error ||
+                  "An error occurred during login. Please try again.",
+              );
+          }
+        }
+      } finally {
         setIsLoading(false);
-        setStep("otp");
-      }, 1200);
+      }
     },
   });
 
@@ -92,76 +139,50 @@ function MobileLogin() {
                   className="space-y-5"
                 >
                   <phoneForm.Field
-                    name="phoneNumber"
+                    name="mobilePhone"
                     children={(field) => (
-                      <div className="space-y-2 text-right">
-                        <label
-                          htmlFor={field.name}
-                          className="text-xs font-bold text-slate-600 mr-1"
-                        >
-                          شماره همراه
-                        </label>
-                        <div className="relative">
-                          <Smartphone className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                          <Input
-                            id={field.name}
-                            name={field.name}
-                            type="tel"
-                            placeholder="09123456789"
-                            value={field.state.value}
-                            onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(e.target.value)}
-                            disabled={isLoading}
-                            className="h-12 pr-10 pl-4 text-left font-sans tracking-widest text-slate-800 bg-slate-50/50 border-slate-100 rounded-xl focus-visible:ring-indigo-500"
-                          />
-                        </div>
-                      </div>
+                      <FormField
+                        label="شماره موبایل"
+                        field={field}
+                        placeholder="09123456789"
+                        type="tel"
+                        icon={Smartphone}
+                        disabled={isLoading}
+                        className="text-left font-sans tracking-widest"
+                      />
                     )}
                   />
 
                   <phoneForm.Field
                     name="password"
                     children={(field) => (
-                      <div className="space-y-2 text-right">
-                        <label
-                          htmlFor={field.name}
-                          className="text-xs font-bold text-slate-600 mr-1"
-                        >
-                          رمز عبور
-                        </label>
-                        <div className="relative">
-                          <KeyRoundIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                          <Input
-                            id={field.name}
-                            name={field.name}
-                            type="password"
-                            placeholder="********"
-                            value={field.state.value}
-                            onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(e.target.value)}
-                            disabled={isLoading}
-                            className="h-12 pr-10 pl-4 text-left font-sans tracking-widest text-slate-800 bg-slate-50/50 border-slate-100 rounded-xl focus-visible:ring-indigo-500"
-                          />
-                        </div>
-                      </div>
+                      <FormField
+                        label="رمز عبور"
+                        field={field}
+                        icon={KeyRoundIcon}
+                        type="password"
+                        placeholder="********"
+                        disabled={isLoading}
+                        className="text-left font-sans tracking-widest" // استایل اختصاصی شما بدون باگ اعمال می‌شود
+                      />
                     )}
                   />
 
                   <phoneForm.Subscribe
                     selector={(state) => [
                       state.canSubmit,
-                      state.values.phoneNumber,
+                      state.values.mobilePhone,
                     ]}
-                    children={([canSubmit, phoneNumber]) => (
+                    children={([canSubmit, mobilePhone]) => (
                       <Button
                         type="submit"
-                        disabled={isLoading || !canSubmit || !phoneNumber}
+                        disabled={isLoading || !canSubmit || !mobilePhone}
                         className="w-full h-12 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-100 transition-all active:scale-[0.98]"
                       >
                         {isLoading
                           ? <Loader2 className="h-5 w-5 animate-spin" />
                           : (
-                            "دریافت کد تایید"
+                            "ثبت نام/ورود"
                           )}
                       </Button>
                     )}

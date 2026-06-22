@@ -10,13 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as DashboardLayoutRouteImport } from './routes/dashboard/_layout'
-import { Route as DashboardLayoutIndexRouteImport } from './routes/dashboard/_layout/index'
+import { Route as DashboardLayoutSchoolIdIndexRouteImport } from './routes/dashboard/_layout/$schoolId/index'
+import { Route as DashboardLayoutSchoolIdProductsIndexRouteImport } from './routes/dashboard/_layout/$schoolId/products/index'
+import { Route as DashboardLayoutSchoolIdInvoicesIndexRouteImport } from './routes/dashboard/_layout/$schoolId/invoices/index'
+import { Route as DashboardLayoutSchoolIdInvoicesCreateRouteImport } from './routes/dashboard/_layout/$schoolId/invoices/create'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
@@ -29,44 +38,97 @@ const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardLayoutIndexRoute = DashboardLayoutIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardLayoutRoute,
-} as any)
+const DashboardLayoutSchoolIdIndexRoute =
+  DashboardLayoutSchoolIdIndexRouteImport.update({
+    id: '/$schoolId/',
+    path: '/$schoolId/',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
+const DashboardLayoutSchoolIdProductsIndexRoute =
+  DashboardLayoutSchoolIdProductsIndexRouteImport.update({
+    id: '/$schoolId/products/',
+    path: '/$schoolId/products/',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
+const DashboardLayoutSchoolIdInvoicesIndexRoute =
+  DashboardLayoutSchoolIdInvoicesIndexRouteImport.update({
+    id: '/$schoolId/invoices/',
+    path: '/$schoolId/invoices/',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
+const DashboardLayoutSchoolIdInvoicesCreateRoute =
+  DashboardLayoutSchoolIdInvoicesCreateRouteImport.update({
+    id: '/$schoolId/invoices/create',
+    path: '/$schoolId/invoices/create',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof DashboardLayoutRouteWithChildren
   '/onboarding/': typeof OnboardingIndexRoute
-  '/dashboard/': typeof DashboardLayoutIndexRoute
+  '/dashboard/$schoolId/': typeof DashboardLayoutSchoolIdIndexRoute
+  '/dashboard/$schoolId/invoices/create': typeof DashboardLayoutSchoolIdInvoicesCreateRoute
+  '/dashboard/$schoolId/invoices/': typeof DashboardLayoutSchoolIdInvoicesIndexRoute
+  '/dashboard/$schoolId/products/': typeof DashboardLayoutSchoolIdProductsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/dashboard': typeof DashboardLayoutRouteWithChildren
   '/onboarding': typeof OnboardingIndexRoute
-  '/dashboard': typeof DashboardLayoutIndexRoute
+  '/dashboard/$schoolId': typeof DashboardLayoutSchoolIdIndexRoute
+  '/dashboard/$schoolId/invoices/create': typeof DashboardLayoutSchoolIdInvoicesCreateRoute
+  '/dashboard/$schoolId/invoices': typeof DashboardLayoutSchoolIdInvoicesIndexRoute
+  '/dashboard/$schoolId/products': typeof DashboardLayoutSchoolIdProductsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/dashboard/_layout': typeof DashboardLayoutRouteWithChildren
   '/onboarding/': typeof OnboardingIndexRoute
-  '/dashboard/_layout/': typeof DashboardLayoutIndexRoute
+  '/dashboard/_layout/$schoolId/': typeof DashboardLayoutSchoolIdIndexRoute
+  '/dashboard/_layout/$schoolId/invoices/create': typeof DashboardLayoutSchoolIdInvoicesCreateRoute
+  '/dashboard/_layout/$schoolId/invoices/': typeof DashboardLayoutSchoolIdInvoicesIndexRoute
+  '/dashboard/_layout/$schoolId/products/': typeof DashboardLayoutSchoolIdProductsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/dashboard' | '/onboarding/' | '/dashboard/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/onboarding/'
+    | '/dashboard/$schoolId/'
+    | '/dashboard/$schoolId/invoices/create'
+    | '/dashboard/$schoolId/invoices/'
+    | '/dashboard/$schoolId/products/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/onboarding' | '/dashboard'
+  to:
+    | '/'
+    | '/login'
+    | '/dashboard'
+    | '/onboarding'
+    | '/dashboard/$schoolId'
+    | '/dashboard/$schoolId/invoices/create'
+    | '/dashboard/$schoolId/invoices'
+    | '/dashboard/$schoolId/products'
   id:
     | '__root__'
+    | '/'
     | '/login'
     | '/dashboard/_layout'
     | '/onboarding/'
-    | '/dashboard/_layout/'
+    | '/dashboard/_layout/$schoolId/'
+    | '/dashboard/_layout/$schoolId/invoices/create'
+    | '/dashboard/_layout/$schoolId/invoices/'
+    | '/dashboard/_layout/$schoolId/products/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
   OnboardingIndexRoute: typeof OnboardingIndexRoute
@@ -79,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding/': {
@@ -95,22 +164,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/_layout/': {
-      id: '/dashboard/_layout/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardLayoutIndexRouteImport
+    '/dashboard/_layout/$schoolId/': {
+      id: '/dashboard/_layout/$schoolId/'
+      path: '/$schoolId'
+      fullPath: '/dashboard/$schoolId/'
+      preLoaderRoute: typeof DashboardLayoutSchoolIdIndexRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/_layout/$schoolId/products/': {
+      id: '/dashboard/_layout/$schoolId/products/'
+      path: '/$schoolId/products'
+      fullPath: '/dashboard/$schoolId/products/'
+      preLoaderRoute: typeof DashboardLayoutSchoolIdProductsIndexRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/_layout/$schoolId/invoices/': {
+      id: '/dashboard/_layout/$schoolId/invoices/'
+      path: '/$schoolId/invoices'
+      fullPath: '/dashboard/$schoolId/invoices/'
+      preLoaderRoute: typeof DashboardLayoutSchoolIdInvoicesIndexRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/_layout/$schoolId/invoices/create': {
+      id: '/dashboard/_layout/$schoolId/invoices/create'
+      path: '/$schoolId/invoices/create'
+      fullPath: '/dashboard/$schoolId/invoices/create'
+      preLoaderRoute: typeof DashboardLayoutSchoolIdInvoicesCreateRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
   }
 }
 
 interface DashboardLayoutRouteChildren {
-  DashboardLayoutIndexRoute: typeof DashboardLayoutIndexRoute
+  DashboardLayoutSchoolIdIndexRoute: typeof DashboardLayoutSchoolIdIndexRoute
+  DashboardLayoutSchoolIdInvoicesCreateRoute: typeof DashboardLayoutSchoolIdInvoicesCreateRoute
+  DashboardLayoutSchoolIdInvoicesIndexRoute: typeof DashboardLayoutSchoolIdInvoicesIndexRoute
+  DashboardLayoutSchoolIdProductsIndexRoute: typeof DashboardLayoutSchoolIdProductsIndexRoute
 }
 
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
-  DashboardLayoutIndexRoute: DashboardLayoutIndexRoute,
+  DashboardLayoutSchoolIdIndexRoute: DashboardLayoutSchoolIdIndexRoute,
+  DashboardLayoutSchoolIdInvoicesCreateRoute:
+    DashboardLayoutSchoolIdInvoicesCreateRoute,
+  DashboardLayoutSchoolIdInvoicesIndexRoute:
+    DashboardLayoutSchoolIdInvoicesIndexRoute,
+  DashboardLayoutSchoolIdProductsIndexRoute:
+    DashboardLayoutSchoolIdProductsIndexRoute,
 }
 
 const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
@@ -118,6 +217,7 @@ const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   DashboardLayoutRoute: DashboardLayoutRouteWithChildren,
   OnboardingIndexRoute: OnboardingIndexRoute,

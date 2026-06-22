@@ -7,14 +7,14 @@ import {
 import { Button } from "../../../components/ui/button";
 import { Badge } from "../../../components/ui/badge";
 import {
-  Users,
-  Receipt,
   BarChart3,
-  FileSpreadsheet,
   ChevronLeft,
-  TrendingUp,
-  TrendingDown,
+  FileSpreadsheet,
   GraduationCap,
+  Receipt,
+  TrendingDown,
+  TrendingUp,
+  Users,
 } from "lucide-react";
 
 export default function MobileDashboardHome() {
@@ -31,7 +31,7 @@ export default function MobileDashboardHome() {
               دانش‌آموزان فعال
             </span>
             <span className="text-base font-black text-slate-800">
-              ۴ Roman ۸۲
+              82
             </span>
           </div>
         </Card>
