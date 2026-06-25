@@ -1,4 +1,4 @@
-import { Calendar, DollarSign, FileText, Layers } from "lucide-react";
+import { DollarSign, FileText, Layers } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { type Product } from "../types";
 
@@ -8,8 +8,6 @@ interface InvoiceDetailsStepProps {
     onProductChange: (id: string) => void;
     customPrice: string;
     onPriceChange: (price: string) => void;
-    dueDate: string;
-    onDueDateChange: (date: string) => void;
     description: string;
     onDescriptionChange: (desc: string) => void;
 }
@@ -20,8 +18,6 @@ export function InvoiceDetailsStep({
     onProductChange,
     customPrice,
     onPriceChange,
-    dueDate,
-    onDueDateChange,
     description,
     onDescriptionChange,
 }: InvoiceDetailsStepProps) {
@@ -44,7 +40,7 @@ export function InvoiceDetailsStep({
             {/* هدر بخش مشخصات فیش */}
             <div>
                 <h2 className="text-sm font-black text-slate-800">
-                    گام دوم: مشخصات فیش مالی
+                    مشخصات فاکتور
                 </h2>
                 <p className="text-[11px] text-slate-400 font-medium mt-0.5">
                     نوع خدمت را انتخاب کرده و مبالغ و مهلت تسویه را تنظیم کنید.
@@ -112,21 +108,6 @@ export function InvoiceDetailsStep({
 
             {/* بخش دوم: مهلت پرداخت و توضیحات (در دسکتاپ کنار هم، در موبایل زیر هم) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* فیلد مهلت پرداخت (سررسید کل فیش) */}
-                <div className="space-y-1.5">
-                    <label className="text-xs font-black text-slate-700 flex items-center gap-1">
-                        <Calendar className="h-3.5 w-3.5 text-slate-400" />
-                        مهلت پرداخت فیش (سررسید)
-                    </label>
-                    <Input
-                        type="text"
-                        placeholder="مثال: ۱۴۰۵/۰۷/۳۰"
-                        value={dueDate}
-                        onChange={(e) => onDueDateChange(e.target.value)}
-                        className="h-11 bg-slate-50 border-slate-200/80 focus-visible:ring-sky-500 text-sm font-medium rounded-xl"
-                    />
-                </div>
-
                 {/* فیلد توضیحات فیش */}
                 <div className="space-y-1.5">
                     <label className="text-xs font-black text-slate-700 flex items-center gap-1">

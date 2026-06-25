@@ -16,6 +16,7 @@ import { Route as DashboardLayoutRouteImport } from './routes/dashboard/_layout'
 import { Route as DashboardLayoutSchoolIdIndexRouteImport } from './routes/dashboard/_layout/$schoolId/index'
 import { Route as DashboardLayoutSchoolIdProductsIndexRouteImport } from './routes/dashboard/_layout/$schoolId/products/index'
 import { Route as DashboardLayoutSchoolIdInvoicesIndexRouteImport } from './routes/dashboard/_layout/$schoolId/invoices/index'
+import { Route as DashboardLayoutSchoolIdPaymentsCreateRouteImport } from './routes/dashboard/_layout/$schoolId/payments/create'
 import { Route as DashboardLayoutSchoolIdInvoicesCreateRouteImport } from './routes/dashboard/_layout/$schoolId/invoices/create'
 
 const LoginRoute = LoginRouteImport.update({
@@ -56,6 +57,12 @@ const DashboardLayoutSchoolIdInvoicesIndexRoute =
     path: '/$schoolId/invoices/',
     getParentRoute: () => DashboardLayoutRoute,
   } as any)
+const DashboardLayoutSchoolIdPaymentsCreateRoute =
+  DashboardLayoutSchoolIdPaymentsCreateRouteImport.update({
+    id: '/$schoolId/payments/create',
+    path: '/$schoolId/payments/create',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
 const DashboardLayoutSchoolIdInvoicesCreateRoute =
   DashboardLayoutSchoolIdInvoicesCreateRouteImport.update({
     id: '/$schoolId/invoices/create',
@@ -70,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/onboarding/': typeof OnboardingIndexRoute
   '/dashboard/$schoolId/': typeof DashboardLayoutSchoolIdIndexRoute
   '/dashboard/$schoolId/invoices/create': typeof DashboardLayoutSchoolIdInvoicesCreateRoute
+  '/dashboard/$schoolId/payments/create': typeof DashboardLayoutSchoolIdPaymentsCreateRoute
   '/dashboard/$schoolId/invoices/': typeof DashboardLayoutSchoolIdInvoicesIndexRoute
   '/dashboard/$schoolId/products/': typeof DashboardLayoutSchoolIdProductsIndexRoute
 }
@@ -80,6 +88,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingIndexRoute
   '/dashboard/$schoolId': typeof DashboardLayoutSchoolIdIndexRoute
   '/dashboard/$schoolId/invoices/create': typeof DashboardLayoutSchoolIdInvoicesCreateRoute
+  '/dashboard/$schoolId/payments/create': typeof DashboardLayoutSchoolIdPaymentsCreateRoute
   '/dashboard/$schoolId/invoices': typeof DashboardLayoutSchoolIdInvoicesIndexRoute
   '/dashboard/$schoolId/products': typeof DashboardLayoutSchoolIdProductsIndexRoute
 }
@@ -91,6 +100,7 @@ export interface FileRoutesById {
   '/onboarding/': typeof OnboardingIndexRoute
   '/dashboard/_layout/$schoolId/': typeof DashboardLayoutSchoolIdIndexRoute
   '/dashboard/_layout/$schoolId/invoices/create': typeof DashboardLayoutSchoolIdInvoicesCreateRoute
+  '/dashboard/_layout/$schoolId/payments/create': typeof DashboardLayoutSchoolIdPaymentsCreateRoute
   '/dashboard/_layout/$schoolId/invoices/': typeof DashboardLayoutSchoolIdInvoicesIndexRoute
   '/dashboard/_layout/$schoolId/products/': typeof DashboardLayoutSchoolIdProductsIndexRoute
 }
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/onboarding/'
     | '/dashboard/$schoolId/'
     | '/dashboard/$schoolId/invoices/create'
+    | '/dashboard/$schoolId/payments/create'
     | '/dashboard/$schoolId/invoices/'
     | '/dashboard/$schoolId/products/'
   fileRoutesByTo: FileRoutesByTo
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/dashboard/$schoolId'
     | '/dashboard/$schoolId/invoices/create'
+    | '/dashboard/$schoolId/payments/create'
     | '/dashboard/$schoolId/invoices'
     | '/dashboard/$schoolId/products'
   id:
@@ -123,6 +135,7 @@ export interface FileRouteTypes {
     | '/onboarding/'
     | '/dashboard/_layout/$schoolId/'
     | '/dashboard/_layout/$schoolId/invoices/create'
+    | '/dashboard/_layout/$schoolId/payments/create'
     | '/dashboard/_layout/$schoolId/invoices/'
     | '/dashboard/_layout/$schoolId/products/'
   fileRoutesById: FileRoutesById
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardLayoutSchoolIdInvoicesIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
+    '/dashboard/_layout/$schoolId/payments/create': {
+      id: '/dashboard/_layout/$schoolId/payments/create'
+      path: '/$schoolId/payments/create'
+      fullPath: '/dashboard/$schoolId/payments/create'
+      preLoaderRoute: typeof DashboardLayoutSchoolIdPaymentsCreateRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
     '/dashboard/_layout/$schoolId/invoices/create': {
       id: '/dashboard/_layout/$schoolId/invoices/create'
       path: '/$schoolId/invoices/create'
@@ -198,6 +218,7 @@ declare module '@tanstack/react-router' {
 interface DashboardLayoutRouteChildren {
   DashboardLayoutSchoolIdIndexRoute: typeof DashboardLayoutSchoolIdIndexRoute
   DashboardLayoutSchoolIdInvoicesCreateRoute: typeof DashboardLayoutSchoolIdInvoicesCreateRoute
+  DashboardLayoutSchoolIdPaymentsCreateRoute: typeof DashboardLayoutSchoolIdPaymentsCreateRoute
   DashboardLayoutSchoolIdInvoicesIndexRoute: typeof DashboardLayoutSchoolIdInvoicesIndexRoute
   DashboardLayoutSchoolIdProductsIndexRoute: typeof DashboardLayoutSchoolIdProductsIndexRoute
 }
@@ -206,6 +227,8 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardLayoutSchoolIdIndexRoute: DashboardLayoutSchoolIdIndexRoute,
   DashboardLayoutSchoolIdInvoicesCreateRoute:
     DashboardLayoutSchoolIdInvoicesCreateRoute,
+  DashboardLayoutSchoolIdPaymentsCreateRoute:
+    DashboardLayoutSchoolIdPaymentsCreateRoute,
   DashboardLayoutSchoolIdInvoicesIndexRoute:
     DashboardLayoutSchoolIdInvoicesIndexRoute,
   DashboardLayoutSchoolIdProductsIndexRoute:

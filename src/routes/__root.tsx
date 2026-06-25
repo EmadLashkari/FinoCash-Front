@@ -14,7 +14,7 @@ const TanStackRouterDevtools = import.meta.env.NODE_ENV === "production"
 export const Route = createRootRoute({
   component: () => (
     <>
-      <Toaster position="top-left" dir="rtl" />
+      <Toaster position="top-center" />
       {/* all pages and child layouts will be rendered here */}
       <Outlet />
 

@@ -10,14 +10,19 @@ import {
   BarChart3,
   ChevronLeft,
   FileSpreadsheet,
+  FileText,
   GraduationCap,
   Receipt,
   TrendingDown,
   TrendingUp,
   Users,
 } from "lucide-react";
+import { useNavigate, useParams } from "@tanstack/react-router";
 
 export default function MobileDashboardHome() {
+  const params = useParams({ strict: false });
+  const schoolId = params.schoolId as string;
+  const navigate = useNavigate();
   return (
     <div className="space-y-6 font-sans pb-6" dir="rtl">
       {/* 1. Main Overview & School Metrics */}
@@ -99,7 +104,27 @@ export default function MobileDashboardHome() {
       <div className="space-y-3">
         <h3 className="text-xs font-bold text-slate-400 mr-1">دسترسی سریع</h3>
 
-        <div className="grid grid-cols-4 gap-3">
+        <div
+          onClick={() => {
+            navigate({
+              to: "/dashboard/$schoolId/invoices/create",
+              params: { schoolId: schoolId },
+            });
+          }}
+          className="grid grid-cols-4 lg:grid-cols-5 gap-3"
+        >
+          <div className="flex flex-col items-center gap-2">
+            <Button
+              size="icon"
+              className="h-14 w-14 rounded-2xl bg-white text-slate-700 hover:bg-slate-50 border border-slate-100/60 shadow-sm transition-transform active:scale-95"
+            >
+              <FileText className="h-5 w-5 text-orange-500" />
+            </Button>
+            <span className="text-[10px] font-bold text-slate-600 text-center">
+              ثبت فاکتور
+            </span>
+          </div>
+
           <div className="flex flex-col items-center gap-2">
             <Button
               size="icon"
@@ -108,7 +133,7 @@ export default function MobileDashboardHome() {
               <Receipt className="h-5 w-5 text-orange-500" />
             </Button>
             <span className="text-[10px] font-bold text-slate-600 text-center">
-              صدور فیش
+              ثبت فیش
             </span>
           </div>
 

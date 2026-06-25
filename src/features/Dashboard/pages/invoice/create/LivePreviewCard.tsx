@@ -1,29 +1,12 @@
 import { useMemo } from "react";
-import {
-    Calendar,
-    HelpCircle,
-    Receipt,
-    ShieldCheck,
-    User,
-    Wallet,
-} from "lucide-react";
-import type {
-    CheckInfo,
-    InstallmentInfo,
-    PaymentMethod,
-    Product,
-    Student,
-} from "./types";
+import { Receipt, User, Wallet } from "lucide-react";
+import type { Product, Student } from "./types";
 
 interface LivePreviewCardProps {
     selectedStudent: Student | null;
     products: Product[];
     selectedProductId: string;
     customPrice: string;
-    dueDate: string;
-    paymentMethod: PaymentMethod;
-    checkInfo: CheckInfo;
-    installmentInfo: InstallmentInfo;
 }
 
 export function LivePreviewCard({
@@ -31,10 +14,6 @@ export function LivePreviewCard({
     products,
     selectedProductId,
     customPrice,
-    dueDate,
-    paymentMethod,
-    checkInfo,
-    installmentInfo,
 }: LivePreviewCardProps) {
     // پیدا کردن نام محصول انتخاب شده از روی کاتالوگ
     const selectedProductTitle = useMemo(() => {
@@ -56,7 +35,7 @@ export function LivePreviewCard({
             <div className="flex items-center gap-1.5 mb-3 px-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-xs font-black text-slate-500">
-                    پیش‌نمایش زنده فیش صادر شده
+                    پیش‌نمایش زنده فاکتور صادر شده
                 </span>
             </div>
 
@@ -99,7 +78,8 @@ export function LivePreviewCard({
                                             نام دانش‌آموز:
                                         </span>
                                         <span className="font-black text-slate-900">
-                                            {selectedStudent.fullName}
+                                            {selectedStudent.firstName}{" "}
+                                            {selectedStudent.lastName}
                                         </span>
                                     </div>
                                     <div className="flex justify-between text-slate-500 text-[11px]">
@@ -153,73 +133,6 @@ export function LivePreviewCard({
                                 </span>
                             </div>
                         </div>
-                    </div>
-
-                    {/* بخش سوم: شیوه پرداخت منتخب */}
-                    <div className="space-y-1.5 pt-1">
-                        <div className="flex justify-between items-center text-xs">
-                            <span className="text-slate-400 font-bold text-[10px] flex items-center gap-1">
-                                <ShieldCheck className="h-3.5 w-3.5 text-slate-400" />
-                                متد تسویه حساب:
-                            </span>
-                            <span className="font-black text-slate-700 bg-white border border-slate-200/60 px-2 py-0.5 rounded-lg text-[11px]">
-                                {paymentMethod === "cash" &&
-                                    "نقدی / کارت‌خوان دسکتاپ"}
-                                {paymentMethod === "installment" &&
-                                    "تعهد اقساطی"}
-                                {paymentMethod === "check" && "چک صیادی ثبت‌شده"}
-                            </span>
-                        </div>
-
-                        {/* جزئیات تکمیلی داینامیک متدها در پیش‌نمایش */}
-                        {paymentMethod === "installment" && (
-                            <div className="bg-sky-50/30 border border-sky-100/50 p-2.5 rounded-xl text-[11px] text-sky-800 font-medium flex justify-between">
-                                <span>توزیع به صورت قسطی:</span>
-                                <span className="font-bold">
-                                    {installmentInfo.count || "۰"} قسط (هر{" "}
-                                    {installmentInfo.intervalDays || "۰"} روز)
-                                </span>
-                            </div>
-                        )}
-
-                        {paymentMethod === "check" && checkInfo.checkNumber && (
-                            <div className="bg-amber-50/40 border border-amber-100/50 p-2.5 rounded-xl text-[10px] text-amber-800 font-medium space-y-0.5 font-mono text-left">
-                                <div className="flex justify-between" dir="rtl">
-                                    <span className="font-sans text-slate-400">
-                                        صیاد ۱۶ رقمی:
-                                    </span>
-                                    <span className="font-bold tracking-wider">
-                                        {checkInfo.checkNumber}
-                                    </span>
-                                </div>
-                                <div className="flex justify-between" dir="rtl">
-                                    <span className="font-sans text-slate-400">
-                                        بانک / سررسید:
-                                    </span>
-                                    <span className="font-sans font-bold">
-                                        {checkInfo.bankName || "—"}{" "}
-                                        ({checkInfo.dueDate || "—"})
-                                    </span>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                {/* فوتر فیش: مهلت نهایی و بارکد دیزاین */}
-                <div className="pt-4 border-t border-dashed border-slate-200 mt-4 space-y-3">
-                    <div className="flex justify-between items-center text-xs">
-                        <span className="text-slate-400 font-medium flex items-center gap-1">
-                            <Calendar className="h-3.5 w-3.5 text-slate-300" />
-                            آخرین مهلت تسویه فیش:
-                        </span>
-                        <span className="font-bold text-slate-700">
-                            {dueDate || (
-                                <span className="text-slate-300 font-normal">
-                                    بدون محدودیت (آزاد)
-                                </span>
-                            )}
-                        </span>
                     </div>
 
                     {/* شبیه‌ساز بارکد برای زیبایی گرافیکی فاکتور چاپی */}

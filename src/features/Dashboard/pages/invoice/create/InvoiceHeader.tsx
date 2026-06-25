@@ -26,11 +26,11 @@ export function InvoiceHeader(
                     <ArrowRight className="h-4 w-4" />
                 </Button>
                 <div>
-                    <h1 className="font-black text-base sm:text-lg text-slate-900 flex items-center gap-2">
+                    <h1 className="font-black text-base sm:text-lg lg:text-lg text-slate-900 flex items-center gap-2">
                         <span className="p-2 rounded-xl bg-sky-50 text-sky-600 block">
                             <Receipt className="h-4 w-4" />
                         </span>
-                        پنل صدور فیش مالی جدید
+                        پنل صدور فاکتور مالی جدید
                     </h1>
                 </div>
             </div>
@@ -43,7 +43,7 @@ export function InvoiceHeader(
                     onChange={(e) => onKeepContextChange(e.target.checked)}
                     className="w-4 h-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 transition-all cursor-pointer"
                 />
-                <span>حفظ اقلام و مبالغ برای فیش بعدی (صدور متوالی)</span>
+                <span>حفظ اقلام و مبالغ برای فاکتور بعدی (صدور متوالی)</span>
             </label>
         </div>
     );

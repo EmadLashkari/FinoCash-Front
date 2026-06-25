@@ -7,9 +7,6 @@ import { toast } from "sonner";
 
 // ۱. ایمپورت تایپ‌ها
 import type {
-    CheckInfo,
-    InstallmentInfo,
-    PaymentMethod,
     Product,
     Student,
 } from "@/features/Dashboard/pages/invoice/create/types";
@@ -17,10 +14,10 @@ import { InvoiceHeader } from "@/features/Dashboard/pages/invoice/create/Invoice
 import { StepProgressBar } from "@/features/Dashboard/pages/invoice/create/StepProgressBar";
 import { StudentSelectionStep } from "@/features/Dashboard/pages/invoice/create/steps/StudentSelectionStep";
 import { InvoiceDetailsStep } from "@/features/Dashboard/pages/invoice/create/steps/InvoiceDetailsStep";
-import { PaymentMethodStep } from "@/features/Dashboard/pages/invoice/create/steps/PaymentMethodStep";
-import { StepNavigationButtons } from "@/features/Dashboard/pages/invoice/create/steps/StepNavigationButtons";
 import { LivePreviewCard } from "@/features/Dashboard/pages/invoice/create/LivePreviewCard";
 import { QuickStudentSheet } from "@/features/Dashboard/pages/invoice/create/QuickStudentSheet";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, Loader2, Save } from "lucide-react";
 
 gsap.registerPlugin(useGSAP);
 
@@ -32,8 +29,8 @@ export const Route = createFileRoute(
         const { schoolId } = params;
         try {
             const [prodRes, studRes] = await Promise.all([
-                api.get(`/school/${schoolId}/products`),
-                api.get(`/school/${schoolId}/students`),
+                api.get(`/products/${schoolId}`),
+                api.get(`/students/school/${schoolId}`),
             ]);
             return {
                 initialProducts: (prodRes.data.data || []) as Product[],
@@ -50,85 +47,24 @@ export const Route = createFileRoute(
 function CreateInvoice() {
     const { schoolId } = Route.useParams();
     const navigate = useNavigate();
-
-    // � دریافت مستقیم دیتای فچ‌شده از لوُدر (بدون نیاز به لودینگ اختصاصی کامپوننت)
     const { initialProducts, initialStudents } = Route.useLoaderData();
 
     const stepContainerRef = useRef<HTMLDivElement>(null);
 
-    // 🔹 مدیریت مراحل فرم (۱ تا ۳)
-    const [currentStep, setCurrentStep] = useState<number>(1);
-
-    // 🔹 ریختن دیتای اولیه لوُدر در استیت (چون ممکن است در طول کار، دانش‌آموز جدیدی ثبت شود و لیست آپدیت شود)
     const [products] = useState<Product[]>(initialProducts);
     const [students, setStudents] = useState<Student[]>(initialStudents);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    console.log("products :", products, "students:", students);
 
-    // 🔹 استیت‌های کلان فرم برای پاس دادن به فرزندان
     const [selectedStudent, setSelectedStudent] = useState<Student | null>(
         null,
     );
     const [selectedProductId, setSelectedProductId] = useState<string>("");
     const [customPrice, setCustomPrice] = useState<string>("");
-    const [dueDate, setDueDate] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
-
-    const [checkInfo, setCheckInfo] = useState<CheckInfo>({
-        checkNumber: "",
-        bankName: "",
-        dueDate: "",
-        drawerName: "",
-    });
-    const [installmentInfo, setInstallmentInfo] = useState<InstallmentInfo>({
-        count: "3",
-        intervalDays: "30",
-    });
 
     const [keepContext, setKeepContext] = useState(true);
     const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
-
-    // 🔹 جابجایی بین مراحل با انیمیشن GSAP
-    const handleNextStep = () => {
-        if (currentStep === 1 && !selectedStudent) {
-            toast.error("لطفاً ابتدا یک دانش‌آموز انتخاب کنید.");
-            return;
-        }
-        if (currentStep === 2 && (!selectedProductId || !customPrice)) {
-            toast.error("لطفاً نوع خدمت و مبلغ را مشخص کنید.");
-            return;
-        }
-
-        gsap.fromTo(stepContainerRef.current, { opacity: 1, x: 0 }, {
-            opacity: 0,
-            x: -20,
-            duration: 0.15,
-            onComplete: () => {
-                setCurrentStep((prev) => prev + 1);
-                gsap.fromTo(stepContainerRef.current, { opacity: 0, x: 20 }, {
-                    opacity: 1,
-                    x: 0,
-                    duration: 0.2,
-                });
-            },
-        });
-    };
-
-    const handlePrevStep = () => {
-        gsap.fromTo(stepContainerRef.current, { opacity: 1, x: 0 }, {
-            opacity: 0,
-            x: 20,
-            duration: 0.15,
-            onComplete: () => {
-                setCurrentStep((prev) => prev - 1);
-                gsap.fromTo(stepContainerRef.current, { opacity: 0, x: -20 }, {
-                    opacity: 1,
-                    x: 0,
-                    duration: 0.2,
-                });
-            },
-        });
-    };
 
     // 🔹 ثبت آنی دانش‌آموز جدید در مودال و آپدیت استیت کاتالوگ
     const handleQuickSaveStudent = async (
@@ -136,7 +72,7 @@ function CreateInvoice() {
     ) => {
         try {
             const res = await api.post(
-                `/school/${schoolId}/students`,
+                `/students/${schoolId}`,
                 newStudentData,
             );
             const createdStudent = res.data.data;
@@ -144,7 +80,7 @@ function CreateInvoice() {
             setStudents((prev) => [createdStudent, ...prev]);
             setSelectedStudent(createdStudent);
             setIsStudentModalOpen(false);
-            toast.success("دانش‌آموز جدید ثبت و به فیش جاری متصل شد.");
+            toast.success("دانش‌آموز جدید ثبت و به فاکتور جاری متصل شد.");
         } catch (error) {
             toast.error("خطا در ثبت مشخصات دانش‌آموز.");
             throw error;
@@ -154,7 +90,7 @@ function CreateInvoice() {
     // 🔹 سابمیت نهایی کل فرم چندمرحله‌ای
     const handleSubmitInvoice = async (action: "next_invoice" | "exit") => {
         if (!selectedStudent || !selectedProductId || !customPrice) {
-            toast.error("اطلاعات فیش ناقص است.");
+            toast.error("اطلاعات فاکتور ناقص است.");
             return;
         }
 
@@ -164,18 +100,11 @@ function CreateInvoice() {
                 studentId: selectedStudent.id,
                 productId: Number(selectedProductId),
                 amount: Number(customPrice),
-                dueDate,
+                dueDate: new Date().toISOString().split("T")[0],
                 description,
-                paymentMethod,
             };
 
-            if (paymentMethod === "check") {
-                payload.checkDetails = checkInfo;
-            } else if (paymentMethod === "installment") {
-                payload.installmentDetails = installmentInfo;
-            }
-
-            await api.post(`/school/${schoolId}/invoices`, payload);
+            await api.post(`/invoices`, payload);
             toast.success(`فیش مالی با موفقیت صادر شد.`);
 
             if (action === "exit") {
@@ -188,36 +117,24 @@ function CreateInvoice() {
                     opacity: 1,
                     duration: 0.3,
                 });
-                setCurrentStep(1);
+
                 setSelectedStudent(null);
 
                 if (!keepContext) {
                     setSelectedProductId("");
                     setCustomPrice("");
                     setDescription("");
-                    setDueDate("");
-                    setPaymentMethod("cash");
-                    setCheckInfo({
-                        checkNumber: "",
-                        bankName: "",
-                        dueDate: "",
-                        drawerName: "",
-                    });
-                    setInstallmentInfo({ count: "3", intervalDays: "30" });
                 }
             }
         } catch (error) {
-            toast.error("خطا در صدور فیش.");
+            toast.error("خطا در صدور فاکتور.");
         } finally {
             setIsSubmitting(false);
         }
     };
 
     return (
-        <div
-            className="min-h-screen bg-slate-50/60 p-3 sm:p-6 font-sans text-right flex flex-col"
-            dir="rtl"
-        >
+        <div className="min-h-screen bg-slate-50/60 p-3 sm:p-6 font-sans text-right flex flex-col">
             <InvoiceHeader
                 onBack={() =>
                     navigate({
@@ -229,70 +146,64 @@ function CreateInvoice() {
             />
 
             <div className="w-full max-w-5xl mx-auto bg-white border border-slate-100 rounded-2xl sm:rounded-3xl shadow-xl p-4 sm:p-6 space-y-6">
-                <StepProgressBar currentStep={currentStep} />
+                {/* <StepProgressBar currentStep={currentStep} /> */}
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div
                         className="lg:col-span-7 space-y-6 order-1"
                         ref={stepContainerRef}
                     >
-                        {currentStep === 1 && (
-                            <StudentSelectionStep
-                                students={students}
-                                selectedStudent={selectedStudent}
-                                onSelectStudent={setSelectedStudent}
-                                onOpenQuickAddModal={() =>
-                                    setIsStudentModalOpen(true)}
-                            />
-                        )}
+                        <StudentSelectionStep
+                            students={students}
+                            selectedStudent={selectedStudent}
+                            onSelectStudent={setSelectedStudent}
+                            onOpenQuickAddModal={() =>
+                                setIsStudentModalOpen(true)}
+                        />
 
-                        {currentStep === 2 && (
-                            <InvoiceDetailsStep
-                                products={products}
-                                selectedProductId={selectedProductId}
-                                onProductChange={setSelectedProductId}
-                                customPrice={customPrice}
-                                onPriceChange={setCustomPrice}
-                                dueDate={dueDate}
-                                onDueDateChange={setDueDate}
-                                description={description}
-                                onDescriptionChange={setDescription}
-                            />
-                        )}
-
-                        {currentStep === 3 && (
-                            <PaymentMethodStep
-                                paymentMethod={paymentMethod}
-                                onPaymentMethodChange={setPaymentMethod}
-                                checkInfo={checkInfo}
-                                onCheckInfoChange={setCheckInfo}
-                                installmentInfo={installmentInfo}
-                                onInstallmentInfoChange={setInstallmentInfo}
-                            />
-                        )}
-
-                        <StepNavigationButtons
-                            currentStep={currentStep}
-                            isSubmitting={isSubmitting}
-                            onNext={handleNextStep}
-                            onPrev={handlePrevStep}
-                            onSubmit={handleSubmitInvoice}
+                        <InvoiceDetailsStep
+                            products={products}
+                            selectedProductId={selectedProductId}
+                            onProductChange={setSelectedProductId}
+                            customPrice={customPrice}
+                            onPriceChange={setCustomPrice}
+                            description={description}
+                            onDescriptionChange={setDescription}
                         />
                     </div>
 
-                    <div className="lg:col-span-5 order-2 lg:order-none">
+                    <div className="lg:col-span-5 order-2 lg:order-1">
                         <LivePreviewCard
                             selectedStudent={selectedStudent}
                             products={products}
                             selectedProductId={selectedProductId}
                             customPrice={customPrice}
-                            dueDate={dueDate}
-                            paymentMethod={paymentMethod}
-                            checkInfo={checkInfo}
-                            installmentInfo={installmentInfo}
                         />
                     </div>
                 </div>
+                <Button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => handleSubmitInvoice("exit")}
+                    variant="outline"
+                    className="h-10 border-sky-200 bg-sky-50/20 text-sky-700 hover:bg-sky-50 text-xs font-bold rounded-xl gap-1 px-4 transition-colors"
+                >
+                    {isSubmitting
+                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        : <Save className="h-3.5 w-3.5" />}
+                    <span>ثبت فاکتور و خروج</span>
+                </Button>
+                <Button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => handleSubmitInvoice("next_invoice")}
+                    className="h-10 bg-sky-600 hover:bg-sky-700 text-white text-xs font-black rounded-xl gap-1 px-5 transition-all shadow-md shadow-sky-100"
+                >
+                    {isSubmitting
+                        ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        : <CheckCircle className="h-3.5 w-3.5" />}
+                    <span>ثبت و فاکتور جدید (متوالی)</span>
+                </Button>
             </div>
 
             <QuickStudentSheet

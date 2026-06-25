@@ -18,20 +18,23 @@ export function StudentSelectionStep({
     onOpenQuickAddModal,
 }: StudentSelectionStepProps) {
     const [query, setQuery] = useState(
-        selectedStudent ? selectedStudent.fullName : "",
+        selectedStudent
+            ? selectedStudent.firstName + " " + selectedStudent.lastName
+            : "",
     );
     const [showDropdown, setShowDropdown] = useState(false);
 
     // فیلتر کردن هوشمند و بهینه لیست دانش‌آموزان با useMemo
     const filteredStudents = useMemo(() => {
         const cleanQuery = query.trim().toLowerCase();
-        if (!cleanQuery || selectedStudent?.fullName === query) return [];
+        if (!cleanQuery || selectedStudent?.firstName === query) return [];
 
         return students.filter(
             (s) =>
-                s.fullName.toLowerCase().includes(cleanQuery) ||
+                s.firstName.toLowerCase().includes(cleanQuery) ||
+                s.lastName.toLowerCase().includes(cleanQuery) ||
                 s.nationalCode.includes(cleanQuery) ||
-                s.mobile.includes(cleanQuery),
+                s.parentPhoneNumber.includes(cleanQuery),
         );
     }, [query, students, selectedStudent]);
 
@@ -46,7 +49,7 @@ export function StudentSelectionStep({
             <div className="flex items-center justify-between">
                 <div>
                     <h2 className="text-sm font-black text-slate-800">
-                        گام اول: گزینش دانش‌آموز
+                        انتخاب دانش‌آموز
                     </h2>
                     <p className="text-[11px] text-slate-400 font-medium mt-0.5">
                         دانش‌آموز مورد نظر را جستجو کنید یا یک پروفایل جدید
@@ -121,14 +124,18 @@ export function StudentSelectionStep({
                                         onMouseDown={(e) => {
                                             e.preventDefault(); // مانع از دست رفتن فوکوس اینپوت پیش از اعمال وضعیت می‌شود
                                             onSelectStudent(student);
-                                            setQuery(student.fullName);
+                                            setQuery(
+                                                student.firstName + " " +
+                                                    student.lastName,
+                                            );
                                             setShowDropdown(false);
                                         }}
                                         className="w-full p-3 text-right hover:bg-slate-50 cursor-pointer transition-colors flex items-center justify-between gap-2"
                                     >
                                         <div className="flex flex-col gap-0.5">
                                             <span className="font-bold text-xs sm:text-sm text-slate-800">
-                                                {student.fullName}
+                                                {student.firstName}{" "}
+                                                {student.lastName}
                                             </span>
                                             <span className="text-[10px] sm:text-[11px] text-slate-400 font-medium">
                                                 نام پدر: {student.fatherName}
@@ -137,7 +144,7 @@ export function StudentSelectionStep({
 
                                         <div className="flex flex-col items-end gap-1 text-[10px] text-slate-400 font-mono">
                                             <span className="flex items-center gap-0.5">
-                                                {student.mobile}
+                                                {student.parentPhoneNumber}
                                                 <Smartphone className="h-3 w-3 text-slate-300" />
                                             </span>
                                             <span className="flex items-center gap-0.5">
@@ -165,7 +172,8 @@ export function StudentSelectionStep({
                                 دانش‌آموز منتخب:
                             </span>
                             <span className="font-bold text-slate-800 truncate block mt-0.5">
-                                {selectedStudent.fullName}
+                                {selectedStudent.firstName}{" "}
+                                {selectedStudent.lastName}
                             </span>
                         </div>
                         <div>
@@ -181,7 +189,7 @@ export function StudentSelectionStep({
                                 شماره همراه سرپرست:
                             </span>
                             <span className="font-mono font-bold text-slate-700 block mt-0.5">
-                                {selectedStudent.mobile}
+                                {selectedStudent.parentPhoneNumber}
                             </span>
                         </div>
                     </div>

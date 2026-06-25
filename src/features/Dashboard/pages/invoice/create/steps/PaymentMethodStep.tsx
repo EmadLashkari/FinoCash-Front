@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import type { CheckInfo, InstallmentInfo, PaymentMethod } from "../types";
+import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
 
 interface PaymentMethodStepProps {
     paymentMethod: PaymentMethod;
@@ -182,7 +183,16 @@ export function PaymentMethodStep({
                                 تاریخ سررسید چک{" "}
                                 <span className="text-rose-500">*</span>
                             </label>
-                            <Input
+                            <JalaliDatePicker
+                                value={checkInfo.dueDate}
+                                onChange={(date) =>
+                                    onCheckInfoChange({
+                                        ...checkInfo,
+                                        dueDate: date,
+                                    })}
+                            />
+                            {
+                                /* <Input
                                 type="text"
                                 placeholder="مثال: ۱۴۰۵/۰۹/۱۵"
                                 value={checkInfo.dueDate}
@@ -192,7 +202,8 @@ export function PaymentMethodStep({
                                         dueDate: e.target.value,
                                     })}
                                 className="h-10 bg-white border-slate-200 focus-visible:ring-sky-500 text-xs font-medium"
-                            />
+                            /> */
+                            }
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-[11px] font-black text-slate-600 flex items-center gap-1">
@@ -202,11 +213,11 @@ export function PaymentMethodStep({
                             <Input
                                 type="text"
                                 placeholder="نام شخص صاحب حساب"
-                                value={checkInfo.drawerName}
+                                value={checkInfo.payerName}
                                 onChange={(e) =>
                                     onCheckInfoChange({
                                         ...checkInfo,
-                                        drawerName: e.target.value,
+                                        payerName: e.target.value,
                                     })}
                                 className="h-10 bg-white border-slate-200 focus-visible:ring-sky-500 text-xs font-medium"
                             />

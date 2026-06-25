@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { Hash, Loader2, Smartphone, User, UserPlus, X } from "lucide-react";
+import { Hash, Loader2, Smartphone, User, UserPlus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+} from "@/components/ui/sheet";
 import type { Student } from "./types";
 
 interface QuickStudentSheetProps {
@@ -23,8 +30,6 @@ export function QuickStudentSheet({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    if (!isOpen) return null;
-
     const handleResetForm = () => {
         setFullName("");
         setFatherName("");
@@ -33,9 +38,11 @@ export function QuickStudentSheet({
         setError(null);
     };
 
-    const handleClose = () => {
-        handleResetForm();
-        onClose();
+    const handleOpenChange = (open: boolean) => {
+        if (!open) {
+            handleResetForm();
+            onClose();
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -54,20 +61,19 @@ export function QuickStudentSheet({
 
         try {
             setIsSubmitting(true);
-
-            // شبیه‌ساز درخواست API به سرور
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
             const mockCreatedStudent: Student = {
-                id: `std_${Date.now()}`,
-                fullName: fullName.trim(),
+                firstName: fullName.trim().split(" ")[0],
+                lastName: fullName.trim().split(" ").slice(1).join(" "),
                 fatherName: fatherName.trim(),
                 nationalCode: nationalCode.trim(),
-                mobile: mobile.trim(),
+                parentPhoneNumber: mobile.trim(),
+                baleChatId: "",
             };
 
             onStudentCreated(mockCreatedStudent);
-            handleClose();
+            handleOpenChange(false);
         } catch (err) {
             setError("خطایی در ثبت اطلاعات رخ داد.");
         } finally {
@@ -76,46 +82,48 @@ export function QuickStudentSheet({
     };
 
     return (
-        <div
-            className="fixed inset-0 z-50 flex justify-end items-end sm:items-stretch"
-            dir="rtl"
-        >
-            {/* لایه تاریک پشت صفحه (Backdrop) */}
-            <div
-                className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300"
-                onClick={handleClose}
-            />
-
-            {/* بدنه اصلی شیت (در موبایل چسبیده به کف، در دسکتاپ پنل تمام‌قد سمت راست) */}
-            <div className="bg-white w-full sm:max-w-md shadow-2xl relative z-10 flex flex-col justify-between h-[85vh] sm:h-full rounded-t-3xl sm:rounded-t-none sm:rounded-l-3xl border-t sm:border-t-0 sm:border-l border-slate-100 animate-in slide-in-from-bottom sm:slide-in-from-right duration-300">
-                {/* هدر شیت */}
-                <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 sm:rounded-tl-3xl">
-                    <div className="flex items-center gap-2 text-emerald-600">
-                        <div className="p-1.5 bg-emerald-50 rounded-lg">
-                            <UserPlus className="h-4 w-4" />
+        <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+            {
+                /* با انتخاب side="right" و کلاس‌های ریسپانسیو Shadcn، شیت در دسکتاپ از راست باز شده
+        و در موبایل به صورت تمام‌صفحه یا Bottom قرار می‌گیرد و کاملاً با RTL هماهنگ است.
+      */
+            }
+            <SheetContent
+                side="right"
+                className="w-full sm:max-w-md p-0 flex flex-col justify-between"
+                dir="rtl"
+            >
+                {/* هدر شیت با ساختار استاندارد Shadcn */}
+                <div className="p-5 border-b border-slate-100 bg-slate-50/50">
+                    <SheetHeader className="text-right space-y-1">
+                        <div className="flex items-center gap-2 text-emerald-600">
+                            <div className="p-1.5 bg-emerald-50 rounded-lg">
+                                <UserPlus className="h-4 w-4" />
+                            </div>
+                            <SheetTitle className="text-sm font-black text-slate-800">
+                                ثبت سریع دانش‌آموز جدید
+                            </SheetTitle>
                         </div>
-                        <h3 className="text-sm font-black text-slate-800">
-                            ثبت سریع دانش‌آموز جدید
-                        </h3>
-                    </div>
-                    <button
-                        type="button"
-                        onClick={handleClose}
-                        className="p-1.5 rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
-                    >
-                        <X className="h-4.5 w-4.5" />
-                    </button>
+                        <SheetDescription className="text-[11px] text-slate-400 font-medium">
+                            مشخصات فردی دانش‌آموز را جهت ثبت آنی در دیتابیس
+                            فینو‌کاش وارد کنید.
+                        </SheetDescription>
+                    </SheetHeader>
                 </div>
 
-                {/* محتوای اسکرول‌شونده فرم */}
+                {/* محتوای فرم درون شیت */}
                 <div className="flex-1 overflow-y-auto p-5 space-y-4">
                     {error && (
-                        <div className="p-3 bg-rose-50 border border-rose-100 text-rose-700 text-[11px] font-bold rounded-xl animate-in fade-in">
+                        <div className="p-3 bg-rose-50 border border-rose-100 text-rose-700 text-[11px] font-bold rounded-xl">
                             {error}
                         </div>
                     )}
 
-                    <div className="space-y-4">
+                    <form
+                        id="quick-student-form"
+                        onSubmit={handleSubmit}
+                        className="space-y-4"
+                    >
                         {/* نام و نام خانوادگی */}
                         <div className="space-y-1.5">
                             <label className="text-xs font-black text-slate-700 flex items-center gap-1">
@@ -173,9 +181,6 @@ export function QuickStudentSheet({
                             <label className="text-xs font-black text-slate-700 flex items-center gap-1">
                                 <Hash className="h-3.5 w-3.5 text-slate-400" />
                                 کد ملی دانش‌آموز{" "}
-                                <span className="text-slate-400 font-normal">
-                                    (اختیاری)
-                                </span>
                             </label>
                             <Input
                                 type="text"
@@ -189,24 +194,24 @@ export function QuickStudentSheet({
                                 className="h-11 text-right font-mono font-bold bg-slate-50/50 focus-visible:ring-emerald-500 rounded-xl border-slate-200/80 tracking-widest"
                             />
                         </div>
-                    </div>
+                    </form>
                 </div>
 
-                {/* بخش دکمه‌های فوتر (همیشه چسبیده به پایین شیت) */}
+                {/* فوتر شیت با دکمه‌های عملیاتی */}
                 <div className="p-5 border-t border-slate-100 bg-slate-50/30 flex items-center justify-end gap-2.5">
                     <Button
                         type="button"
                         variant="ghost"
                         disabled={isSubmitting}
-                        onClick={handleClose}
+                        onClick={() => handleOpenChange(false)}
                         className="h-10 text-xs text-slate-500 hover:bg-slate-100 font-bold rounded-xl px-4"
                     >
                         انصراف
                     </Button>
 
                     <Button
-                        type="button"
-                        onClick={handleSubmit}
+                        type="submit"
+                        form="quick-student-form" // متصل به سابمیت فرم بالا
                         disabled={isSubmitting}
                         className="h-10 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl px-5 shadow-lg shadow-emerald-100 gap-1.5 transition-all flex-1 sm:flex-none justify-center"
                     >
@@ -216,7 +221,7 @@ export function QuickStudentSheet({
                         <span>ثبت و گزینش در فیش</span>
                     </Button>
                 </div>
-            </div>
-        </div>
+            </SheetContent>
+        </Sheet>
     );
 }

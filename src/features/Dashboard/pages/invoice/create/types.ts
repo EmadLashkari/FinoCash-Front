@@ -4,11 +4,13 @@
  * مدل اطلاعات دانش‌آموز
  */
 export interface Student {
-    id: number | string;
-    fullName: string;
+    id?: number | string;
+    firstName: string;
+    lastName: string;
     fatherName: string;
     nationalCode: string;
-    mobile: string; // شماره همراه سرپرست
+    parentPhoneNumber: string;
+    baleChatId: string;
 }
 
 /**
@@ -31,8 +33,8 @@ export type PaymentMethod = "cash" | "installment" | "check";
 export interface CheckInfo {
     checkNumber: string; // شماره ۱۶ رقمی صیاد
     bankName: string; // نام بانک صادرکننده
-    dueDate: string; // تاریخ سررسید چک
-    drawerName: string; // نام شخص صادرکننده (صاحب حساب)
+    dueDate: Date | undefined; // تاریخ سررسید چک
+    payerName: string; // نام شخص صادرکننده (صاحب حساب)
 }
 
 /**

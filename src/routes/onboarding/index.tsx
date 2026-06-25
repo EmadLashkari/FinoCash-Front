@@ -60,7 +60,8 @@ function OnboardingWizard() {
         if (response.status === 201 || response.status === 200) {
           toast.success("مدرسه با موفقیت ثبت شد");
           const id: string = response.data.data.id;
-          redirect({ to: "/dashboard/$schoolId", params: { schoolId: id } });
+          console.log("school information", response.data.data);
+          navigate({ to: "/dashboard/$schoolId", params: { schoolId: id } });
         }
       } catch (error: any) {
         console.error("Failed to create school:", error);

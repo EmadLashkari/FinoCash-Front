@@ -1,4 +1,3 @@
-// components/ui/form-field.tsx
 import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -16,7 +15,7 @@ export function FormField(
     const hasError = field.state.meta.errors.length > 0;
 
     return (
-        <div className="space-y-2 text-right" dir="rtl">
+        <div className="space-y-2 text-end" dir="rtl">
             {/* Field label with right margin and dynamic color change on error */}
             <Label
                 htmlFor={field.name}
@@ -30,7 +29,7 @@ export function FormField(
             <div className="relative flex items-center">
                 {/* 1. Render the main component icon on the right */}
                 {Icon && (
-                    <Icon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                    <Icon className="absolute end-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                 )}
 
                 <Input
@@ -52,7 +51,7 @@ export function FormField(
 
                 {/* 2. Render error icon on the left (without breaking the alignment of the right icon) */}
                 {hasError && (
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-destructive animate-in fade-in duration-200">
+                    <div className="absolute start-3 top-1/2 -translate-y-1/2 text-destructive animate-in fade-in duration-200">
                         <AlertCircle className="h-4 w-4" />
                     </div>
                 )}
@@ -60,7 +59,7 @@ export function FormField(
 
             {/* 3. Display error message below the input, fully right-aligned */}
             {hasError && (
-                <p className="text-[11px] font-bold text-destructive mr-1 animate-in fade-in slide-in-from-top-1 duration-200">
+                <p className="text-[11px] font-bold text-destructive me-1 animate-in fade-in slide-in-from-top-1 duration-200">
                     {field.state.meta.errors
                         .map((
                             err: any,

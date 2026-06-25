@@ -52,7 +52,7 @@ function MobileLogin() {
         console.log("Login Response:", response);
         switch (response.status) {
           case 200:
-            navigate({ to: "/dashboard" });
+            navigate({ to: "/" });
             break;
           case 401:
             toast.error(response.data?.error || "Invalid credentials.");

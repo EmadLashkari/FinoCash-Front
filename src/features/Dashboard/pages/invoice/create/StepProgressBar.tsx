@@ -9,7 +9,7 @@ export function StepProgressBar({ currentStep }: StepProgressBarProps) {
     const steps = [
         { id: 1, label: "انتخاب دانش‌آموز", icon: User },
         { id: 2, label: "مشخصات فیش مالی", icon: FileText },
-        { id: 3, label: "شیوه تسویه و پرداخت", icon: CreditCard },
+        // { id: 3, label: "شیوه تسویه و پرداخت", icon: CreditCard },
     ];
 
     return (
