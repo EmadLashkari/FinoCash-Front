@@ -275,7 +275,7 @@ function ProductsList() {
 
                 {isLoading
                     ? (
-                        <div className="flex-1 flex flex-col items-center justify-center min-h-[300px] bg-white rounded-3xl border border-slate-100 shadow-sm">
+                        <div className="flex-1 flex flex-col items-center justify-center min-h-75 bg-white rounded-3xl border border-slate-100 shadow-sm">
                             <Loader2 className="h-8 w-8 animate-spin text-sky-600 mb-2" />
                             <span className="text-xs font-bold text-slate-500">
                                 در حال بارگذاری کاتالوگ مالی...
@@ -284,7 +284,7 @@ function ProductsList() {
                     )
                     : filteredProducts.length === 0
                     ? (
-                        <Card className="flex-1 border-none bg-white shadow-xl shadow-slate-100/50 rounded-3xl flex flex-col items-center justify-center p-12 min-h-[350px]">
+                        <Card className="flex-1 border-none bg-white shadow-xl shadow-slate-100/50 rounded-3xl flex flex-col items-center justify-center p-12 min-h-87.5">
                             <CardContent className="text-center space-y-4 flex flex-col items-center">
                                 <div className="h-16 w-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300">
                                     <Inbox className="h-8 w-8" />

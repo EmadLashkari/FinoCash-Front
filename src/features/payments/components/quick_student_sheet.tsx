@@ -21,7 +21,6 @@ import { useRouter } from "@tanstack/react-router";
 interface QuickStudentSheetProps {
     isOpen: boolean;
     onClose: () => void;
-    onStudentCreated: (newStudent: Student) => void;
     schoolId: string;
 }
 
@@ -41,7 +40,6 @@ const StudentFormSchema = z.object({
 export function QuickStudentSheet({
     isOpen,
     onClose,
-    onStudentCreated,
     schoolId,
 }: QuickStudentSheetProps) {
     const router = useRouter();
@@ -160,7 +158,8 @@ export function QuickStudentSheet({
                                             field.state.meta.errors.length
                                         ? (
                                             <p className="text-[11px] text-rose-500 font-bold mt-1">
-                                                {field.state.meta.errors[0]}
+                                                {field.state.meta.errors[0]
+                                                    ?.toString()}
                                             </p>
                                         )
                                         : null}
@@ -198,7 +197,8 @@ export function QuickStudentSheet({
                                             field.state.meta.errors.length
                                         ? (
                                             <p className="text-[11px] text-rose-500 font-bold mt-1">
-                                                {field.state.meta.errors[0]}
+                                                {field.state.meta.errors[0]
+                                                    ?.toString()}
                                             </p>
                                         )
                                         : null}
@@ -247,7 +247,8 @@ export function QuickStudentSheet({
                                             field.state.meta.errors.length
                                         ? (
                                             <p className="text-[11px] text-rose-500 font-bold mt-1">
-                                                {field.state.meta.errors[0]}
+                                                {field.state.meta.errors[0]
+                                                    ?.toString()}
                                             </p>
                                         )
                                         : null}

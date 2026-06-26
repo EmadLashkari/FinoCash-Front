@@ -213,9 +213,6 @@ function RegisterPaymentForm() {
             <QuickStudentSheet
                 isOpen={openQuickAddModal}
                 onClose={() => setOnOpenQuickAddModal(false)}
-                onStudentCreated={(newStudent) => {
-                    // Handle the created student (e.g., update the form or state)
-                }}
                 schoolId={schoolId}
             />
         </>
