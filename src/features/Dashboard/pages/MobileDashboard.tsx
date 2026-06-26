@@ -104,17 +104,15 @@ export default function MobileDashboardHome() {
       <div className="space-y-3">
         <h3 className="text-xs font-bold text-slate-400 mr-1">دسترسی سریع</h3>
 
-        <div
-          onClick={() => {
-            navigate({
-              to: "/dashboard/$schoolId/invoices/create",
-              params: { schoolId: schoolId },
-            });
-          }}
-          className="grid grid-cols-4 lg:grid-cols-5 gap-3"
-        >
+        <div className="grid grid-cols-4 lg:grid-cols-5 gap-3">
           <div className="flex flex-col items-center gap-2">
             <Button
+              onClick={() => {
+                navigate({
+                  to: "/dashboard/$schoolId/invoices/create",
+                  params: { schoolId: schoolId },
+                });
+              }}
               size="icon"
               className="h-14 w-14 rounded-2xl bg-white text-slate-700 hover:bg-slate-50 border border-slate-100/60 shadow-sm transition-transform active:scale-95"
             >
@@ -127,6 +125,12 @@ export default function MobileDashboardHome() {
 
           <div className="flex flex-col items-center gap-2">
             <Button
+              onClick={() => {
+                navigate({
+                  to: "/dashboard/$schoolId/payments/create",
+                  params: { schoolId: schoolId },
+                });
+              }}
               size="icon"
               className="h-14 w-14 rounded-2xl bg-white text-slate-700 hover:bg-slate-50 border border-slate-100/60 shadow-sm transition-transform active:scale-95"
             >
