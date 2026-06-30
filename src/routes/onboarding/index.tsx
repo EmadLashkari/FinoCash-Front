@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm } from "@tanstack/react-form";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";

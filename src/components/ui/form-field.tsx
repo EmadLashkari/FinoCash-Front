@@ -15,11 +15,11 @@ export function FormField(
     const hasError = field.state.meta.errors.length > 0;
 
     return (
-        <div className="space-y-2 text-end" dir="rtl">
+        <div className="w-full space-y-2">
             {/* Field label with right margin and dynamic color change on error */}
             <Label
                 htmlFor={field.name}
-                className={`text-xs font-bold mr-1 transition-colors ${
+                className={`text-xs justify-end font-bold mr-1 transition-colors ${
                     hasError ? "text-destructive" : "text-slate-600"
                 }`}
             >
@@ -29,7 +29,7 @@ export function FormField(
             <div className="relative flex items-center">
                 {/* 1. Render the main component icon on the right */}
                 {Icon && (
-                    <Icon className="absolute end-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                    <Icon className="absolute inset-e-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                 )}
 
                 <Input
@@ -51,7 +51,7 @@ export function FormField(
 
                 {/* 2. Render error icon on the left (without breaking the alignment of the right icon) */}
                 {hasError && (
-                    <div className="absolute start-3 top-1/2 -translate-y-1/2 text-destructive animate-in fade-in duration-200">
+                    <div className="absolute inset-s-3 top-1/2 -translate-y-1/2 text-destructive animate-in fade-in duration-200">
                         <AlertCircle className="h-4 w-4" />
                     </div>
                 )}

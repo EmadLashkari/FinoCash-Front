@@ -6,6 +6,7 @@
     "module": "esnext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "preserveSymlinks": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -14,6 +15,8 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "strict": true,
+    "strictNullChecks": true,
 
     /* Linting */
     "noUnusedLocals": true,

@@ -1,5 +1,5 @@
 // components/StepProgressBar.tsx
-import { Check, CreditCard, FileText, User } from "lucide-react";
+import { Check, FileText, User } from "lucide-react";
 
 interface StepProgressBarProps {
     currentStep: number;
@@ -16,11 +16,11 @@ export function StepProgressBar({ currentStep }: StepProgressBarProps) {
         <div className="w-full pb-4 border-b border-slate-100" dir="rtl">
             <div className="flex items-center justify-between max-w-xl mx-auto relative px-4">
                 {/* خط پس‌زمینه پیشرفت کلان */}
-                <div className="absolute top-5 right-10 left-10 h-[2px] bg-slate-100 -z-10" />
+                <div className="absolute top-5 right-10 left-10 h-0.5 bg-slate-100 -z-10" />
 
                 {/* خط رنگی پیشرفت پویا متصل به وضعیت استپ */}
                 <div
-                    className="absolute top-5 right-10 h-[2px] bg-sky-500 -z-10 transition-all duration-300 ease-in-out"
+                    className="absolute top-5 right-10 h-0.5 bg-sky-500 -z-10 transition-all duration-300 ease-in-out"
                     style={{
                         width: currentStep === 1
                             ? "0%"
@@ -58,7 +58,7 @@ export function StepProgressBar({ currentStep }: StepProgressBarProps) {
                 `}
                             >
                                 {isCompleted
-                                    ? <Check className="h-5 w-5 stroke-[3]" />
+                                    ? <Check className="h-5 w-5 stroke-3" />
                                     : <IconComponent className="h-4 w-4" />}
                             </div>
 

@@ -21,12 +21,10 @@ export function InvoiceDetailsStep({
     description,
     onDescriptionChange,
 }: InvoiceDetailsStepProps) {
-    // هندلر اختصاصی برای تغییر محصول و پر کردن خودکار قیمت پیش‌فرض کاتالوگ
     const handleProductSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const id = e.target.value;
         onProductChange(id);
 
-        // پیدا کردن محصول و ست کردن قیمت آن در استیت اصلی
         const selectedProd = products.find((p) => p.id === Number(id));
         if (selectedProd) {
             onPriceChange(selectedProd.price.toString());
@@ -37,19 +35,16 @@ export function InvoiceDetailsStep({
 
     return (
         <div className="space-y-4" dir="rtl">
-            {/* هدر بخش مشخصات فیش */}
             <div>
                 <h2 className="text-sm font-black text-slate-800">
                     مشخصات فاکتور
                 </h2>
                 <p className="text-[11px] text-slate-400 font-medium mt-0.5">
-                    نوع خدمت را انتخاب کرده و مبالغ و مهلت تسویه را تنظیم کنید.
+                    نوع خدمت را انتخاب کرده و مبلغ را تنظیم کنید.
                 </p>
             </div>
 
-            {/* بخش اول: انتخاب محصول و تعیین قیمت (در دسکتاپ کنار هم، در موبایل زیر هم) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* فیلد انتخاب محصول از کاتالوگ */}
                 <div className="space-y-1.5">
                     <label className="text-xs font-black text-slate-700 flex items-center gap-1">
                         <Layers className="h-3.5 w-3.5 text-slate-400" />
@@ -69,14 +64,12 @@ export function InvoiceDetailsStep({
                                 </option>
                             ))}
                         </select>
-                        {/* فلش سفارشی برای ظاهر زیباتر سلکت باکس ری‌اکت */}
                         <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[10px]">
                             ▼
                         </div>
                     </div>
                 </div>
 
-                {/* فیلد مبلغ نهایی */}
                 <div className="space-y-1.5">
                     <label className="text-xs font-black text-slate-700 flex items-center gap-1">
                         <DollarSign className="h-3.5 w-3.5 text-slate-400" />
@@ -106,9 +99,7 @@ export function InvoiceDetailsStep({
                 </div>
             </div>
 
-            {/* بخش دوم: مهلت پرداخت و توضیحات (در دسکتاپ کنار هم، در موبایل زیر هم) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* فیلد توضیحات فیش */}
                 <div className="space-y-1.5">
                     <label className="text-xs font-black text-slate-700 flex items-center gap-1">
                         <FileText className="h-3.5 w-3.5 text-slate-400" />

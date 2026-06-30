@@ -60,7 +60,7 @@ function MobileLogin() {
           default:
             toast.error("خطا در ورود به سیستم. لطفاً دوباره تلاش کنید.");
         }
-      } catch (error) {
+      } catch (error: any) {
         if (error.response) {
           const { status, data } = error.response;
 
@@ -100,10 +100,7 @@ function MobileLogin() {
   });
 
   return (
-    <div
-      className="min-h-screen bg-slate-50/60 flex flex-col justify-between p-6 font-sans"
-      dir="rtl"
-    >
+    <div className="min-h-screen bg-slate-50/60 flex flex-col justify-between p-6 font-sans">
       {/* Top Section: Branding */}
       <div className="flex flex-col items-center text-center pt-12 space-y-4">
         <div className="h-16 w-16 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-100">

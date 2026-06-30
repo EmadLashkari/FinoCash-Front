@@ -20,24 +20,20 @@ export function MobileDashboardLayout() {
   const schoolId = params.schoolId;
   const navigate = useNavigate();
   return (
-    <div
-      className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans pb-24"
-      dir="rtl"
-    >
+    <div className="flex flex-col min-h-screen bg-slate-50 text-slate-900 font-sans pb-24">
       {/* هدر مینی‌مال بالای صفحه موبایل */}
-      <header className="sticky top-0 z-50 flex justify-between items-center px-5 py-3 bg-white/80 backdrop-blur-md border-b border-slate-100">
-        <div className="w-fit flex items-center gap-1">
+      <header className="sticky top-0 z-50 flex flex-row-reverse justify-between items-center px-5 py-3 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div className="w-fit flex flex-row-reverse items-center gap-1">
           <Avatar className="h-8 w-8 border border-slate-200">
             <AvatarImage src="" />
             <AvatarFallback className="bg-slate-100 text-slate-700 text-xs font-bold">
-              ر‌ا
             </AvatarFallback>
           </Avatar>
           <span className="text-xs font-semibold text-slate-500"></span>
         </div>
 
         <span className="text-sm font-bold text-slate-800 tracking-tight">
-          فینو پول
+          Fino Cash
         </span>
 
         {/* دکمه نوتیفیکیشن مینی‌مال */}
@@ -56,7 +52,7 @@ export function MobileDashboardLayout() {
       </main>
 
       {/* ناوبری پایینی نئوبانکی با Buttonهای کاملاً آیکونیک shadcn */}
-      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-100 flex justify-around items-center px-2 shadow-lg rounded-t-2xl z-50">
+      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-100 flex flex-row-reverse justify-around items-center px-2 shadow-lg rounded-t-2xl z-50">
         <Button
           variant="ghost"
           onClick={() => {

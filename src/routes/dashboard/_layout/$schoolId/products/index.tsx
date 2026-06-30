@@ -91,7 +91,7 @@ function FormInputField(
                             id={field.name}
                             type={type}
                             placeholder={placeholder}
-                            value={field.state.value}
+                            // value={field.state.value}
                             onChange={(e) =>
                                 field.handleChange(
                                     type === "number"
@@ -450,8 +450,8 @@ function ProductsList() {
                                         <FormInputField
                                             field={field}
                                             label="مبلغ (تومان)"
-                                            placeholder="0"
                                             type="number"
+                                            placeholder="0"
                                             dir="ltr"
                                             icon={DollarSign}
                                         />

@@ -3,13 +3,13 @@ import { createRootRoute, Outlet } from "@tanstack/react-router";
 import React from "react";
 
 // production mode, we don't want to load the devtools
-const TanStackRouterDevtools = import.meta.env.NODE_ENV === "production"
-  ? () => null
-  : React.lazy(() =>
-    import("@tanstack/router-devtools").then((res) => ({
-      default: res.TanStackRouterDevtools,
-    }))
-  );
+// const TanStackRouterDevtools = import.meta.env.NODE_ENV === "production"
+//   ? () => null
+//   : React.lazy(() =>
+//     import("@tanstack/router-devtools").then((res) => ({
+//       default: res.TanStackRouterDevtools,
+//     }))
+//   );
 
 export const Route = createRootRoute({
   component: () => (

@@ -11,7 +11,6 @@ import type {
     Student,
 } from "@/features/Dashboard/pages/invoice/create/types";
 import { InvoiceHeader } from "@/features/Dashboard/pages/invoice/create/InvoiceHeader";
-import { StepProgressBar } from "@/features/Dashboard/pages/invoice/create/StepProgressBar";
 import { StudentSelectionStep } from "@/features/Dashboard/pages/invoice/create/steps/StudentSelectionStep";
 import { InvoiceDetailsStep } from "@/features/Dashboard/pages/invoice/create/steps/InvoiceDetailsStep";
 import { LivePreviewCard } from "@/features/Dashboard/pages/invoice/create/LivePreviewCard";

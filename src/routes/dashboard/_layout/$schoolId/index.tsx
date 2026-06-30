@@ -9,6 +9,7 @@ export const Route = createFileRoute("/dashboard/_layout/$schoolId/")({
       // Fetch the current user profile/status from the session/cookie
       const response = await api.get("/auth/me");
       const { hasSchool } = response.data.data;
+      const { schoolInfo } = response.data.data;
       console.log("User profile fetched successfully:", response.data.data);
 
       // If the user hasn't created a school, throw a TanStack redirect to onboarding
@@ -17,6 +18,8 @@ export const Route = createFileRoute("/dashboard/_layout/$schoolId/")({
           to: "/onboarding",
         });
       }
+
+      return { school: schoolInfo };
     } catch (error) {
       // If unauthorized (e.g., token expired), redirect back to login
       if (isRedirect(error)) {

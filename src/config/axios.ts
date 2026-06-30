@@ -1,9 +1,9 @@
 import axios from "axios";
-
+const isProd = import.meta.env.PROD;
 // create an Axios instance with default configuration
 export const api = axios.create({
     // vite environment variable for the base URL, fallback to localhost if not set
-    baseURL: "http://127.0.0.1:8000/api",
+    baseURL: isProd ? "/api" : "http://127.0.0.1:8000/api",
 
     // for sending cookies with requests, useful for authentication
     withCredentials: true,
